@@ -1,0 +1,97 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Student Task Management System{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="navbar">
+
+            <a href="{% url 'home' %}" class="brand">
+                <span class="brand-icon">✓</span>
+                <span>TaskFlow</span>
+            </a>
+
+            <nav class="nav-links">
+
+                <a href="{% url 'home' %}" class="nav-button">
+                    Home
+                </a>
+
+                {% if user.is_authenticated %}
+
+                    <a href="{% url 'dashboard' %}" class="nav-button">
+                        Dashboard
+                    </a>
+
+                    <a href="{% url 'add_task' %}" class="nav-button">
+                        + Add Task
+                    </a>
+
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-button logout-button">
+                            Logout
+                        </button>
+                    </form>
+
+                    <div class="user-menu">
+                        <span class="user-avatar">
+                            {{ user.username|first|upper }}
+                        </span>
+
+                        <span class="nav-username">
+                            {{ user.get_full_name|default:user.username }}
+                        </span>
+                    </div>
+
+                {% else %}
+
+                    <a href="{% url 'login' %}" class="nav-button">
+                        Login
+                    </a>
+
+                    <a href="{% url 'register' %}" class="nav-button">
+                        Get Started
+                    </a>
+
+                {% endif %}
+
+            </nav>
+
+        </div>
+    </header>
+
+    <main class="main-content">
+
+        {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                    <div class="message-alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+    <footer class="main-footer">
+        <p>© 2026 TaskFlow | Student Task Management System</p>
+        <p>Plan your work. Achieve your goals.</p>
+    </footer>
+
+</body>
+</html>
+

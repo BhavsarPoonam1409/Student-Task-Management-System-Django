@@ -1,0 +1,201 @@
+
+{% extends 'tasks/base.html' %}
+
+{% block title %}Dashboard | TaskFlow{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-page">
+
+    <section class="dashboard-welcome">
+        <div>
+            <p class="dashboard-eyebrow">YOUR PERSONAL WORKSPACE</p>
+
+            <h1>
+                Welcome back, {{ user.get_full_name|default:user.username }}!
+                <span class="wave">👋</span>
+            </h1>
+
+            <p class="dashboard-subtitle">
+                Stay organized, track your progress, and get things done.
+            </p>
+        </div>
+
+        <a href="{% url 'add_task' %}" class="primary-button">
+            + Create New Task
+        </a>
+    </section>
+
+    <section class="stats-grid">
+
+        <div class="stat-card total-stat">
+            <div class="stat-top">
+                <span class="stat-label">Total Tasks</span>
+                <span class="stat-icon">▤</span>
+            </div>
+
+            <h2>{{ total_tasks }}</h2>
+            <p>All your tasks</p>
+        </div>
+
+        <div class="stat-card pending-stat">
+            <div class="stat-top">
+                <span class="stat-label">Pending Tasks</span>
+                <span class="stat-icon">◷</span>
+            </div>
+
+            <h2>{{ pending_tasks }}</h2>
+            <p>Tasks to complete</p>
+        </div>
+
+        <div class="stat-card completed-stat">
+            <div class="stat-top">
+                <span class="stat-label">Completed Tasks</span>
+                <span class="stat-icon">✓</span>
+            </div>
+
+            <h2>{{ completed_tasks }}</h2>
+            <p>Great work so far!</p>
+        </div>
+
+    </section>
+
+    <section class="tasks-section">
+
+        <div class="section-heading">
+            <div>
+                <h2>My Tasks</h2>
+                <p>Manage your tasks and monitor your progress.</p>
+            </div>
+
+            <a href="{% url 'add_task' %}" class="text-link">
+                + Add Task
+            </a>
+        </div>
+
+        {% if tasks %}
+
+            <div class="task-list">
+
+                {% for task in tasks %}
+
+                    <article class="dashboard-task-card">
+
+                        <div class="task-status-icon {% if task.completed %}status-completed{% else %}status-pending{% endif %}">
+                            {% if task.completed %}
+                                ✓
+                            {% else %}
+                                ○
+                            {% endif %}
+                        </div>
+
+                        <div class="task-main-info">
+
+                            <h3 class="{% if task.completed %}completed-title{% endif %}">
+                                {{ task.title }}
+                            </h3>
+
+                            <p class="task-description">
+                                {% if task.description %}
+                                    {{ task.description|truncatewords:18 }}
+                                {% else %}
+                                    No description added.
+                                {% endif %}
+                            </p>
+
+                            <div class="task-meta">
+
+                                <span class="priority-badge priority-{{ task.priority|lower }}">
+                                    {{ task.priority }} Priority
+                                </span>
+
+                                {% if task.due_date %}
+                                    <span class="due-date">
+                                        Due: {{ task.due_date|date:"d M Y" }}
+                                    </span>
+                                {% endif %}
+
+                                {% if task.completed %}
+                                    <span class="completion-badge">
+                                        Completed
+                                    </span>
+                                {% else %}
+                                    <span class="pending-badge">
+                                        Pending
+                                    </span>
+                                {% endif %}
+
+                            </div>
+
+                            <form method="post"
+                                  action="{% url 'toggle_task' task.pk %}"
+                                  class="complete-task-form">
+
+                                {% csrf_token %}
+
+                                {% if task.completed %}
+                                    <button type="submit"
+                                            class="complete-task-button completed-button">
+                                        ✓ Completed — Undo
+                                    </button>
+                                {% else %}
+                                    <button type="submit"
+                                            class="complete-task-button">
+                                        ✓ Mark as Completed
+                                    </button>
+                                {% endif %}
+
+                            </form>
+
+                        </div>
+
+                        <div class="task-actions">
+
+                            <a href="{% url 'task_detail' task.pk %}"
+                               class="action-button view-action">
+                                View
+                            </a>
+
+                            <a href="{% url 'edit_task' task.pk %}"
+                               class="action-button edit-action">
+                                Edit
+                            </a>
+
+                            <a href="{% url 'delete_task' task.pk %}"
+                               class="action-button delete-action">
+                                Delete
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="empty-tasks">
+                <div class="empty-task-icon">📝</div>
+
+                <h3>No tasks yet!</h3>
+
+                <p>
+                    Your task list is empty. Create your first task
+                    and start organizing your work.
+                </p>
+
+                <a href="{% url 'add_task' %}" class="primary-button">
+                    + Create Your First Task
+                </a>
+            </div>
+
+        {% endif %}
+
+    </section>
+
+</div>
+
+{% endblock %}
+

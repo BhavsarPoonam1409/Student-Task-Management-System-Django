@@ -1,0 +1,112 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Add Task | Student Task Management System{% endblock %}
+
+{% block content %}
+
+<div class="task-form-page">
+
+    <div class="task-form-heading">
+        <div class="heading-icon">✓</div>
+        <div>
+            <h1>Create a New Task</h1>
+            <p>Organize your work and stay on top of your goals.</p>
+        </div>
+    </div>
+
+    <div class="task-form-layout">
+
+        <div class="task-form-card">
+
+            <div class="form-card-heading">
+                <h2>Task Information</h2>
+                <p>Enter the details for your new task below.</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="task-field">
+
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                            {% if field.field.required %}
+                                <span class="required-star">*</span>
+                            {% endif %}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.help_text %}
+                            <small class="field-help">{{ field.help_text|safe }}</small>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <p class="field-error">{{ error }}</p>
+                        {% endfor %}
+
+                    </div>
+                {% endfor %}
+
+                {% if form.non_field_errors %}
+                    <div class="form-errors">
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="task-form-actions">
+                    <button type="submit" class="save-task-button">
+                        Save Task <span>→</span>
+                    </button>
+
+                    <a href="{% url 'dashboard' %}" class="cancel-task-button">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+
+        <aside class="task-tips-card">
+            <div class="tips-icon">✦</div>
+            <h3>Make your tasks manageable</h3>
+            <p>A little planning can make your day more productive.</p>
+
+            <div class="tip-item">
+                <span class="tip-number">01</span>
+                <div>
+                    <strong>Choose a clear title</strong>
+                    <p>Write what you need to accomplish.</p>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <span class="tip-number">02</span>
+                <div>
+                    <strong>Set your priority</strong>
+                    <p>Decide which tasks need more attention.</p>
+                </div>
+            </div>
+
+            <div class="tip-item">
+                <span class="tip-number">03</span>
+                <div>
+                    <strong>Add a due date</strong>
+                    <p>Keep track of your deadlines.</p>
+                </div>
+            </div>
+
+            <div class="tips-bottom">
+                Every completed task is a step forward.
+            </div>
+        </aside>
+
+    </div>
+
+</div>
+
+{% endblock %}

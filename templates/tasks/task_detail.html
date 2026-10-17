@@ -1,0 +1,75 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Task Details | TaskFlow{% endblock %}
+
+{% block content %}
+
+<section class="form-page">
+
+    <div class="detail-card">
+
+        <a href="{% url 'dashboard' %}" class="back-link">
+            ← Back to Dashboard
+        </a>
+
+        <span class="eyebrow">TASK DETAILS</span>
+
+        <h1 class="{% if task.completed %}completed-title{% endif %}">
+            {{ task.title }}
+        </h1>
+
+        <div class="detail-meta">
+
+            <span class="priority priority-{{ task.priority|lower }}">
+                {{ task.priority }} Priority
+            </span>
+
+            {% if task.completed %}
+                <span class="status-badge completed-badge">Completed</span>
+            {% else %}
+                <span class="status-badge pending-badge">Pending</span>
+            {% endif %}
+
+        </div>
+
+        <div class="detail-description">
+            <h3>Description</h3>
+
+            {% if task.description %}
+                <p>{{ task.description|linebreaksbr }}</p>
+            {% else %}
+                <p>No description provided.</p>
+            {% endif %}
+        </div>
+
+        <div class="detail-row">
+            <strong>Due Date</strong>
+            <span>
+                {% if task.due_date %}
+                    {{ task.due_date|date:"d M Y" }}
+                {% else %}
+                    Not specified
+                {% endif %}
+            </span>
+        </div>
+
+        <div class="detail-row">
+            <strong>Created On</strong>
+            <span>{{ task.created_at|date:"d M Y, h:i A" }}</span>
+        </div>
+
+        <div class="detail-actions">
+            <a href="{% url 'edit_task' task.pk %}" class="btn btn-primary">
+                Edit Task
+            </a>
+
+            <a href="{% url 'delete_task' task.pk %}" class="btn btn-danger">
+                Delete Task
+            </a>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

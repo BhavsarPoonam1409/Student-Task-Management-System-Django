@@ -1,0 +1,172 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Home | Student Task Management System{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            <span class="badge-dot"></span>
+            Student Task Management System
+        </div>
+
+        <h1>
+            Plan Your Tasks.<br>
+            <span>Achieve More.</span>
+        </h1>
+
+        <p class="hero-description">
+            Manage your daily tasks in one place. Keep track of your progress,
+            organize your priorities, and stay focused on your academic goals.
+        </p>
+
+        <div class="hero-buttons">
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'dashboard' %}" class="btn btn-primary">
+                    Go to Dashboard <span>→</span>
+                </a>
+
+                <a href="{% url 'add_task' %}" class="btn btn-secondary">
+                    Create New Task
+                </a>
+            {% else %}
+                <a href="{% url 'register' %}" class="btn btn-primary">
+                    Get Started <span>→</span>
+                </a>
+
+                <a href="{% url 'login' %}" class="btn btn-secondary">
+                    Login to Account
+                </a>
+            {% endif %}
+
+        </div>
+
+        <div class="hero-note">
+            <span class="check-icon">✓</span>
+            Simple, organized and easy to use
+        </div>
+
+    </div>
+
+
+    <!-- Task Preview Card -->
+    <div class="hero-visual">
+
+        <div class="decoration decoration-one"></div>
+        <div class="decoration decoration-two"></div>
+
+        <div class="preview-card">
+
+            <div class="preview-header">
+                <div>
+                    <p class="preview-subtitle">YOUR WORKSPACE</p>
+                    <h3>Task Overview</h3>
+                </div>
+
+                <div class="preview-icon">✓</div>
+            </div>
+
+            <div class="preview-welcome">
+                <div class="welcome-icon">S</div>
+                <div>
+                    <strong>Stay on Track</strong>
+                    <p>Small steps, big achievements.</p>
+                </div>
+            </div>
+
+            <div class="preview-task">
+                <div class="task-check completed-check">✓</div>
+                <div class="task-info">
+                    <strong>Review class notes</strong>
+                    <span>Learning & Revision</span>
+                </div>
+                <span class="task-status status-done">Done</span>
+            </div>
+
+            <div class="preview-task">
+                <div class="task-check"></div>
+                <div class="task-info">
+                    <strong>Complete assignment</strong>
+                    <span>Academic Work</span>
+                </div>
+                <span class="task-status status-pending">Pending</span>
+            </div>
+
+            <div class="preview-task">
+                <div class="task-check"></div>
+                <div class="task-info">
+                    <strong>Practice programming</strong>
+                    <span>Skill Development</span>
+                </div>
+                <span class="task-status status-pending">Pending</span>
+            </div>
+
+            <div class="preview-footer">
+                <span>✦</span>
+                Every task completed is progress!
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Features Section -->
+<section class="features-section">
+
+    <div class="section-heading">
+        <span class="section-label">WHAT YOU CAN DO</span>
+        <h2>Everything you need to stay organized</h2>
+        <p>A simple way to manage your academic and personal tasks.</p>
+    </div>
+
+    <div class="features-grid">
+
+        <div class="feature-card">
+            <div class="feature-icon icon-purple">☑</div>
+            <h3>Manage Tasks</h3>
+            <p>Create, view, update and delete your tasks whenever you need.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon icon-blue">◷</div>
+            <h3>Track Progress</h3>
+            <p>Mark tasks as completed and keep track of pending work.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon icon-green">▤</div>
+            <h3>Personal Dashboard</h3>
+            <p>View your tasks and progress in one convenient dashboard.</p>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- Bottom Call to Action -->
+<section class="cta-section">
+    <div>
+        <h2>Ready to organize your day?</h2>
+        <p>Start managing your tasks and make every day productive.</p>
+    </div>
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'dashboard' %}" class="btn btn-light">
+            View Dashboard →
+        </a>
+    {% else %}
+        <a href="{% url 'register' %}" class="btn btn-light">
+            Create Your Account →
+        </a>
+    {% endif %}
+</section>
+
+{% endblock %}
